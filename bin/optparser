@@ -17,6 +17,12 @@ OptionParser.new do |opts|
       exit
   end
 
+  # Another typical switch to print the version.
+  opts.on_tail("--version", "Show version") do
+    puts ::Version.join('.')
+    exit
+  end
+
 end.parse!
 
 p options
