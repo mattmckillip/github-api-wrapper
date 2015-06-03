@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Turnt::Octo::Archer::VERSION
   spec.authors       = ["Matt McKillip"]
   spec.email         = ["matt.mckillip@cerner.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = "This is a summary"
+  spec.description   = "This is a description"
   spec.homepage      = ""
   spec.license       = "MIT"
 
