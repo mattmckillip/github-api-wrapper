@@ -15,6 +15,18 @@ class Github
     @api_url = api_url
     @org_name = org_name
     @project_name = project_name
+
+    # set up common fields
+    github_response('')
+    @id = @response['id']
+    @name = @response['name']
+    @owner = @response['owner']['login']
+    @private = @response['private']
+    @url = @response['url']
+    @created_at = @response['created_at']
+    @has_issues = @response['has_issues']
+    @default_branch = @response['default_branch']
+    @subscribers = @response['subscribers_count']
   end
 
   # Internal: Call HTTParty to and store the hash in @response.
@@ -27,12 +39,67 @@ class Github
     @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}", headers:{'User-Agent' => 'test'})
   end
 
+  # Public: Gets the id for this project.
+  #
+  # Returns the id for the project.
+  def id
+    @id
+  end
+
+  # Public: Gets the name of this project.
+  #
+  # Returns the name of the project.
+  def name
+    @name
+  end
+
+  # Public: Gets the owner of this project.
+  #
+  # Returns the owner of the project.
+  def owner
+    @owner
+  end
+
+  # Public: Checks if the project is private.
+  #
+  # Returns true if the project is private.
+  def private?
+    @private
+  end
+
+  # Public: Gets the url for this project.
+  #
+  # Returns the url for the project.
+  def url
+    @url
+  end
+
+  # Public: Gets the creation date for this project.
+  #
+  # Returns the creation date for the project.
+  def created_at
+    @created_at
+  end
+
+  # Public: Checks for open issues in the project.
+  #
+  # Returns true if there are any open issues.
+  def issues?
+    @has_issues
+  end
+
+  # Public: Gets the default branch for this project.
+  #
+  # Returns the default branch for the project.
+  def default_branch
+    @default_branch
+  end
+
   # Public: Gets the number of subscribers for this project.
   #
   # Returns the number of subscribers for the project.
   def subscribers
-    github_response('')
-    @response['subscribers_count']
+    @subscribers
   end
 
   # Public: Gets the total number of commits in the past year.
