@@ -45,21 +45,21 @@ class GitHub
 
   # Public: Gets the id for this project.
   #
-  # Returns [Integer] the id for the project or nil if nothing was found.
+  # Returns an [Integer] id for the project or nil if nothing was found.
   def id
     @id
   end
 
   # Public: Gets the name of this project.
   #
-  # Returns [String] the name of the project or nil if nothing was found.
+  # Returns the [String] name of the project or nil if nothing was found.
   def name
     @name
   end
 
   # Public: Gets the owner of this project.
   #
-  # Returns [String] the owner of the project  or nil if nothing was found.
+  # Returns the [String] owner of the project  or nil if nothing was found.
   def owner
     @owner
   end
@@ -73,14 +73,14 @@ class GitHub
 
   # Public: Gets the url for this project.
   #
-  # Returns [String] the url for the project or nil if nothing was found.
+  # Returns the [String] url for the project or nil if nothing was found.
   def url
     @url
   end
 
   # Public: Gets the creation date for this project.
   #
-  # Returns [String] the creation date for the project or nil if nothing was found.
+  # Returns the [String] creation date for the project or nil if nothing was found.
   def created_at
     @created_at
   end
@@ -94,21 +94,21 @@ class GitHub
 
   # Public: Gets the default branch for this project.
   #
-  # Returns [String] the default branch for the project or nil if nothing was found.
+  # Returns the [String] default branch for the project or nil if nothing was found.
   def default_branch
     @default_branch
   end
 
   # Public: Gets the number of subscribers for this project.
   #
-  # Returns [Integer] the number of subscribers for the project or nil if nothing was found.
+  # Returns the [Integer] number of subscribers for the project or nil if nothing was found.
   def subscribers
     @subscribers
   end
 
   # Public: Gets the total number of commits in the past year.
   #
-  # Returns [Integer] the number of commits in the past year or nil if nothing was found.
+  # Returns the [Integer] number of commits in the past year or nil if nothing was found.
   def yearly_commits
     github_response('/stats/participation')
     commits_weekly = nil
@@ -126,7 +126,7 @@ class GitHub
   #
   # day - The Integer number representing the day (0:sunday, 1: monday, ...).
   #
-  # Returns [Integer] the number of commits for the given day of the week or nil if nothing was found.
+  # Returns the [Integer] number of commits for the given day of the week or nil if nothing was found.
   def commits_per_day_of_week(day)
     sum = nil
     github_response('/stats/punch_card')
@@ -144,7 +144,7 @@ class GitHub
   #
   # hour - The Integer number representing the hour of the day (0..23).
   #
-  # Returns [Integer] the number of commits for a given hour of the day or nil if nothing was found.
+  # Returns the [Integer] number of commits for a given hour of the day or nil if nothing was found.
   def commits_per_hour_of_day(hour)
     sum = nil
     github_response('/stats/punch_card')
@@ -160,7 +160,7 @@ class GitHub
 
   # Public: Gets the number of branches for this project.
   #
-  # Returns [Integer] the number of branches for the project or nil if nothing was found.
+  # Returns the [Integer] number of branches for the project or nil if nothing was found.
   def number_of_branches
     github_response('/branches')
     return nil unless response?
@@ -181,7 +181,7 @@ class GitHub
   #
   # num_weeks - the number of weeks for the number of commits
   #
-  # Returns [Integer] the number of commits for the specified number of weeks or nil if nothing was found
+  # Returns the [Integer] number of commits for the specified number of weeks or nil if nothing was found
   def commits_past_weeks(num_weeks)
     past_weeks_commits = nil
     github_response('/stats/participation')
@@ -196,7 +196,7 @@ class GitHub
 
   # Public: Finds the relevant information for current issues
   #
-  # Returns [Hash] an array of hashes containing information about the open issues or nil if nothing was found.
+  # Returns an [Array] of hashes containing information about the open issues or nil if nothing was found.
   def current_issues
     issues = nil
     github_response('/issues')
