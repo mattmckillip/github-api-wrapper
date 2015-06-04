@@ -91,9 +91,7 @@ class Github
   # Returns a string containing the author name.
   def latest_committer
     github_response("/commits")
-    #TODO fix this line: null response
-    #@resonse[0]["commit"]["author"]["name"]
-    return "David Crowder"
+    @response[0]["commit"]["author"]["name"]
   end
 
   # Public: returns the number of weeks in the past given amount of weeks
@@ -107,5 +105,26 @@ class Github
 
     # Add up all the weeks commits to get the total commits in the timespan
     past_weeks_commits.inject(:+)
+  end
+
+  # Public: Finds the relevant information for current issues
+  #
+  # Returns an array of hashes containing information about the open issues
+  def current_issues
+    github_response("/issues")
+    @response
+    issue_hash = {}
+    issues = []
+    @response.each do |subhash|
+      issue_hash["id"] = subhash["id"]
+      issue_hash["title"] = subhash["title"]
+      issue_hash["user"] = subhash["user"]["login"]
+      issue_hash["state"] = subhash["state"]
+      issue_hash["url"] = subhash["url"]
+
+      # Add isses to the array
+      issues << issue_hash
+    end
+    issues
   end
 end
