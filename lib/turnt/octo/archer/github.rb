@@ -18,15 +18,19 @@ class Github
 
     # set up common fields
     github_response('')
-    @id = @response['id']
-    @name = @response['name']
-    @owner = @response['owner']['login']
-    @private = @response['private']
-    @url = @response['url']
-    @created_at = @response['created_at']
-    @has_issues = @response['has_issues']
-    @default_branch = @response['default_branch']
-    @subscribers = @response['subscribers_count']
+
+    if response?
+      @id = @response['id']
+      @name = @response['name']
+      @owner = @response['owner']['login']
+      @private = @response['private']
+      @url = @response['url']
+      @created_at = @response['created_at']
+      @has_issues = @response['has_issues']
+      @default_branch = @response['default_branch']
+      @subscribers = @response['subscribers_count']
+    end
+
   end
 
   # Internal: Call HTTParty to and store the hash in @response.
@@ -35,7 +39,6 @@ class Github
   #
   # Returns the HTTParty request in the @response hash.
   def github_response(additional_info)
-    #TODO raise erros
     @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}", headers:{'User-Agent' => 'test'})
   end
 
@@ -108,11 +111,14 @@ class Github
   def yearly_commits
     github_response('/stats/participation')
 
-    # Returns a list containing 52 indices with number of commits that week
-    commits_weekly= @response['all']
+    if response?
+      # Returns a list containing 52 indices with number of commits that week
+      commits_weekly = @response['all']
 
-    # Add up all the weeks commits to get the total commits that year
-    commits_weekly.inject(:+)
+      # Add up all the weeks commits to get the total commits that year
+      commits_weekly = commits_weekly.inject(:+)
+    end
+    commits_weekly
   end
 
   # Public: Gets the number of subscribers for this project.
@@ -122,12 +128,14 @@ class Github
   # Returns the number of commits for the given day of the week.
   def commits_per_day_of_week(day)
     github_response('/stats/punch_card')
-    sum = 0
-    # Iterate through hash, adding the 2nd index which is number of commits that day
-    @response.each do |subarray|
-      sum += subarray[2] if subarray[0] == day
+    if response?
+      sum = 0
+      # Iterate through hash, adding the 2nd index which is number of commits that day
+      @response.each do |subarray|
+        sum += subarray[2] if subarray[0] == day
+      end
     end
-    return sum
+    sum
   end
 
   # Public: Gets the number of subscribers for this project.
@@ -137,12 +145,14 @@ class Github
   # Returns the number of commits for a given hour of the day.
   def commits_per_hour_of_day(hour)
     github_response('/stats/punch_card')
-    sum = 0
-    # Iterate through hash, adding the 2nd index which is number of commits that hour
-    @response.each do |subarray|
-      sum += subarray[2] if subarray[1] == hour
+    if response?
+      sum = 0
+      # Iterate through hash, adding the 2nd index which is number of commits that hour
+      @response.each do |subarray|
+        sum += subarray[2] if subarray[1] == hour
+      end
     end
-    return sum
+    sum
   end
 
   # Public: Gets the number of branches for this project.
@@ -150,7 +160,8 @@ class Github
   # Returns the number of branches for the project.
   def number_of_branches
     github_response('/branches')
-    return @response.length
+    return nil unless response?
+    @response.length
   end
 
   # Public: Gets the name of the author for the latest commit.
@@ -158,6 +169,8 @@ class Github
   # Returns a string containing the author name.
   def latest_committer
     github_response('/commits')
+
+    return nil unless response?
     @response[0]['commit']['author']['name']
   end
 
@@ -168,10 +181,13 @@ class Github
   # Returns the number of commits for the specified number of weeks
   def commits_past_weeks(num_weeks)
     github_response('/stats/participation')
-    past_weeks_commits = @response['all'].reverse![0, num_weeks]
+    if response?
+      past_weeks_commits = @response['all'].reverse![0, num_weeks]
 
-    # Add up all the weeks commits to get the total commits in the timespan
-    past_weeks_commits.inject(:+)
+      # Add up all the weeks commits to get the total commits in the timespan
+      past_weeks_commits = past_weeks_commits.inject(:+)
+    end
+    past_weeks_commits
   end
 
   # Public: Finds the relevant information for current issues
@@ -179,17 +195,19 @@ class Github
   # Returns an array of hashes containing information about the open issues
   def current_issues
     github_response('/issues')
-    issue_hash = {}
-    issues = []
-    @response.each do |subhash|
-      issue_hash['id'] = subhash['id']
-      issue_hash['title'] = subhash['title']
-      issue_hash['user'] = subhash['user']['login']
-      issue_hash['state'] = subhash['state']
-      issue_hash['url'] = subhash['url']
+    if response?
+      issue_hash = {}
+      issues = []
+      @response.each do |subhash|
+        issue_hash['id'] = subhash['id']
+        issue_hash['title'] = subhash['title']
+        issue_hash['user'] = subhash['user']['login']
+        issue_hash['state'] = subhash['state']
+        issue_hash['url'] = subhash['url']
 
-      # Add isses to the array
-      issues << issue_hash
+        # Add isses to the array
+        issues << issue_hash
+      end
     end
     issues
   end
@@ -199,12 +217,15 @@ class Github
   # Returns a hash of authors and the number of commits mad
   def commits_per_author
     github_response('/commits')
-    authors = {}
-    @response.each do |subhash|
-      name = subhash['commit']['author']['name']
-      authors[name] = 0 unless authors.has_key? name
-      authors[name] += 1
+    if response?
+      authors = {}
+      @response.each do |subhash|
+        name = subhash['commit']['author']['name']
+        authors[name] = 0 unless authors.has_key? name
+        authors[name] += 1
+      end
     end
+
     authors
   end
 
@@ -213,6 +234,19 @@ class Github
   # Returns a hash of the langauges and the number of lines
   def languages
     github_response('/languages')
+    return nil unless response?
     @response
   end
+
+  # Internal: tests if the response is good
+  def response?
+    if @response.is_a?(Hash) && @response['message'] == 'Not Found'
+      return false
+    elsif @response.nil?
+      return false
+    else
+      return true
+    end
+  end
+
 end
