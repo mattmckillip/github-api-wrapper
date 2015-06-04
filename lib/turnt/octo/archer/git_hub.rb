@@ -37,7 +37,7 @@ class GitHub
   #
   # additional_info - The String which will contain any trailing information appended to the end ot the url.
   #
-  # Returns the HTTParty request in the @response hash or nil if nothing was found.
+  # Returns [void] the HTTParty request in the @response hash or nil if nothing was found.
   def github_response(additional_info)
     @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}",
                              headers:{'User-Agent' => 'test'})
@@ -45,70 +45,70 @@ class GitHub
 
   # Public: Gets the id for this project.
   #
-  # Returns the id for the project or nil if nothing was found.
+  # Returns [Integer] the id for the project or nil if nothing was found.
   def id
     @id
   end
 
   # Public: Gets the name of this project.
   #
-  # Returns the name of the project or nil if nothing was found.
+  # Returns [String] the name of the project or nil if nothing was found.
   def name
     @name
   end
 
   # Public: Gets the owner of this project.
   #
-  # Returns the owner of the project  or nil if nothing was found.
+  # Returns [String] the owner of the project  or nil if nothing was found.
   def owner
     @owner
   end
 
   # Public: Checks if the project is private.
   #
-  # Returns true if the project is private or nil if nothing was found.
+  # Returns [Boolean] true if the project is private or nil if nothing was found.
   def private?
     @private
   end
 
   # Public: Gets the url for this project.
   #
-  # Returns the url for the project or nil if nothing was found.
+  # Returns [String] the url for the project or nil if nothing was found.
   def url
     @url
   end
 
   # Public: Gets the creation date for this project.
   #
-  # Returns the creation date for the project or nil if nothing was found.
+  # Returns [String] the creation date for the project or nil if nothing was found.
   def created_at
     @created_at
   end
 
   # Public: Checks for open issues in the project.
   #
-  # Returns true if there are any open issues or nil if nothing was found.
+  # Returns [Boolean] true if there are any open issues or nil if nothing was found.
   def issues?
     @has_issues
   end
 
   # Public: Gets the default branch for this project.
   #
-  # Returns the default branch for the project or nil if nothing was found.
+  # Returns [String] the default branch for the project or nil if nothing was found.
   def default_branch
     @default_branch
   end
 
   # Public: Gets the number of subscribers for this project.
   #
-  # Returns the number of subscribers for the project or nil if nothing was found.
+  # Returns [Integer] the number of subscribers for the project or nil if nothing was found.
   def subscribers
     @subscribers
   end
 
   # Public: Gets the total number of commits in the past year.
   #
-  # Returns the number of commits in the past year or nil if nothing was found.
+  # Returns [Integer] the number of commits in the past year or nil if nothing was found.
   def yearly_commits
     github_response('/stats/participation')
     commits_weekly = nil
@@ -126,7 +126,7 @@ class GitHub
   #
   # day - The Integer number representing the day (0:sunday, 1: monday, ...).
   #
-  # Returns the number of commits for the given day of the week or nil if nothing was found.
+  # Returns [Integer] the number of commits for the given day of the week or nil if nothing was found.
   def commits_per_day_of_week(day)
     sum = nil
     github_response('/stats/punch_card')
@@ -144,7 +144,7 @@ class GitHub
   #
   # hour - The Integer number representing the hour of the day (0..23).
   #
-  # Returns the number of commits for a given hour of the day or nil if nothing was found.
+  # Returns [Integer] the number of commits for a given hour of the day or nil if nothing was found.
   def commits_per_hour_of_day(hour)
     sum = nil
     github_response('/stats/punch_card')
@@ -160,7 +160,7 @@ class GitHub
 
   # Public: Gets the number of branches for this project.
   #
-  # Returns the number of branches for the project or nil if nothing was found.
+  # Returns [Integer] the number of branches for the project or nil if nothing was found.
   def number_of_branches
     github_response('/branches')
     return nil unless response?
@@ -169,7 +169,7 @@ class GitHub
 
   # Public: Gets the name of the author for the latest commit.
   #
-  # Returns a string containing the author name or nil if nothing was found.
+  # Returns a [String] containing the author name or nil if nothing was found.
   def latest_committer
     github_response('/commits')
 
@@ -181,7 +181,7 @@ class GitHub
   #
   # num_weeks - the number of weeks for the number of commits
   #
-  # Returns the number of commits for the specified number of weeks or nil if nothing was found
+  # Returns [Integer] the number of commits for the specified number of weeks or nil if nothing was found
   def commits_past_weeks(num_weeks)
     past_weeks_commits = nil
     github_response('/stats/participation')
@@ -196,7 +196,7 @@ class GitHub
 
   # Public: Finds the relevant information for current issues
   #
-  # Returns an array of hashes containing information about the open issues or nil if nothing was found.
+  # Returns [Hash] an array of hashes containing information about the open issues or nil if nothing was found.
   def current_issues
     issues = nil
     github_response('/issues')
@@ -219,7 +219,7 @@ class GitHub
 
   # Public: Finds the amount of commits for each author
   #
-  # Returns a hash of authors and the number of commits made or nil if nothing was found.
+  # Returns a [Hash] of authors and the number of commits made or nil if nothing was found.
   def commits_per_author
     authors = nil
     github_response('/commits')
@@ -236,7 +236,7 @@ class GitHub
 
   # Public: Finds the number of lines written in each programming language
   #
-  # Returns a hash of the languages and the number of lines or nil if nothing was found.
+  # Returns a [Hash] of the languages and the number of lines or nil if nothing was found.
   def languages
     github_response('/languages')
     return nil unless response?
@@ -244,6 +244,8 @@ class GitHub
   end
 
   # Internal: tests if the response is good
+  #
+  # Returns [Boolean] true if the @response has data inside
   def response?
     bool = true
     if @response.nil?
