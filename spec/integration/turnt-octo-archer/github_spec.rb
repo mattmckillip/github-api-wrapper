@@ -48,4 +48,10 @@ RSpec.describe Github do
       expect(@github.commits_past_weeks(5)).to eq 3
     end
   end
+
+  describe '.current_issues' do
+    it 'returns information about the of current issues ' do
+      expect(@github.current_issues[0]["user"]).to eq "ab8971"
+    end
+  end
 end
