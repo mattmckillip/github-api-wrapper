@@ -1,6 +1,6 @@
 # Turnt::Octo::Archer
 
-TODO: Write a gem description
+This gem is a wrapper around the GitHub API. I am using this as a learning tool for Ruby.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Use this to get information from a specified repo.
 
 ## Contributing
 
