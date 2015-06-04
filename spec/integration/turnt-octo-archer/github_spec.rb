@@ -3,7 +3,7 @@ require 'turnt/octo/archer/github'
 
 RSpec.describe Github do
   before :each do
-    @github = Github.new("http://github.cerner.com/api/v3/repos/", "OpsInfra", "ops_spork")
+    @github = Github.new('http://github.cerner.com/api/v3/repos/', 'OpsInfra', 'ops_spork')
   end
 
   describe '.subscribers' do
@@ -39,7 +39,7 @@ RSpec.describe Github do
 
   describe '.latest_committer' do
     it 'returns name of latestcommitter ' do
-      expect(@github.latest_committer).to eq "David Crowder"
+      expect(@github.latest_committer).to eq 'David Crowder'
     end
   end
 
@@ -51,13 +51,19 @@ RSpec.describe Github do
 
   describe '.current_issues' do
     it 'returns information about the of current issues ' do
-      expect(@github.current_issues[0]["user"]).to eq "ab8971"
+      expect(@github.current_issues[0]['user']).to eq 'ab8971'
     end
   end
 
   describe '.commits_per_author' do
     it 'returns number of commits for authors ' do
-      expect(@github.commits_per_author["David Crowder"]).to be > 1
+      expect(@github.commits_per_author['David Crowder']).to be > 1
+    end
+  end
+
+  describe '.languages' do
+    it 'returns number lines per language ' do
+      expect(@github.languages['Ruby']).to eq 75_750
     end
   end
 end
