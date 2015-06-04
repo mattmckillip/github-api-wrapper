@@ -1,13 +1,13 @@
-require "turnt/octo/archer/version"
-require "turnt/octo/archer/github"
-require "HTTParty"
+require 'turnt/octo/archer/version'
+require 'turnt/octo/archer/github'
+require 'HTTParty'
 
 class Github
 
   # Public: Initialize a new Github wrapper.
   #
   # api_url  - The String which will contain the base api url.
-  # org_name - The String whcih will contain the organizations name.
+  # org_name - The String which will contain the organizations name.
   # project_name  - The String which will contain the project name.
   #
   # Returns nothing.
@@ -21,17 +21,17 @@ class Github
   #
   # additional_info - The String which will contain any trailing information appended to the end ot the url.
   #
-  # Returns the HTTPary request in the @response hash.
+  # Returns the HTTParty request in the @response hash.
   def github_response(additional_info)
     #TODO raise erros
-    @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}", headers:{"User-Agent" => "test"})
+    @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}", headers:{'User-Agent' => 'test'})
   end
 
   # Public: Gets the number of subscribers for this project.
   #
   # Returns the number of subscribers for the project.
   def subscribers
-    github_response("")
+    github_response('')
     @response['subscribers_count']
   end
 
@@ -39,7 +39,7 @@ class Github
   #
   # Returns the number of commits in the past year.
   def yearly_commits
-    github_response("/stats/participation")
+    github_response('/stats/participation')
 
     # Returns a list containing 52 indices with number of commits that week
     commits_weekly= @response['all']
@@ -54,7 +54,7 @@ class Github
   #
   # Returns the number of commits for the given day of the week.
   def commits_per_day_of_week(day)
-    github_response("/stats/punch_card")
+    github_response('/stats/punch_card')
     sum = 0
     # Iterate through hash, adding the 2nd index which is number of commits that day
     @response.each do |subarray|
@@ -69,7 +69,7 @@ class Github
   #
   # Returns the number of commits for a given hour of the day.
   def commits_per_hour_of_day(hour)
-    github_response("/stats/punch_card")
+    github_response('/stats/punch_card')
     sum = 0
     # Iterate through hash, adding the 2nd index which is number of commits that hour
     @response.each do |subarray|
@@ -82,7 +82,7 @@ class Github
   #
   # Returns the number of branches for the project.
   def number_of_branches
-    github_response("/branches")
+    github_response('/branches')
     return @response.length
   end
 
@@ -90,8 +90,8 @@ class Github
   #
   # Returns a string containing the author name.
   def latest_committer
-    github_response("/commits")
-    @response[0]["commit"]["author"]["name"]
+    github_response('/commits')
+    @response[0]['commit']['author']['name']
   end
 
   # Public: returns the number of weeks in the past given amount of weeks
@@ -100,8 +100,8 @@ class Github
   #
   # Returns the number of commits for the specified number of weeks
   def commits_past_weeks(num_weeks)
-    github_response("/stats/participation")
-    past_weeks_commits = @response["all"].reverse![0, num_weeks]
+    github_response('/stats/participation')
+    past_weeks_commits = @response['all'].reverse![0, num_weeks]
 
     # Add up all the weeks commits to get the total commits in the timespan
     past_weeks_commits.inject(:+)
@@ -111,15 +111,15 @@ class Github
   #
   # Returns an array of hashes containing information about the open issues
   def current_issues
-    github_response("/issues")
+    github_response('/issues')
     issue_hash = {}
     issues = []
     @response.each do |subhash|
-      issue_hash["id"] = subhash["id"]
-      issue_hash["title"] = subhash["title"]
-      issue_hash["user"] = subhash["user"]["login"]
-      issue_hash["state"] = subhash["state"]
-      issue_hash["url"] = subhash["url"]
+      issue_hash['id'] = subhash['id']
+      issue_hash['title'] = subhash['title']
+      issue_hash['user'] = subhash['user']['login']
+      issue_hash['state'] = subhash['state']
+      issue_hash['url'] = subhash['url']
 
       # Add isses to the array
       issues << issue_hash
@@ -131,13 +131,21 @@ class Github
   #
   # Returns a hash of authors and the number of commits mad
   def commits_per_author
-    github_response("/commits")
+    github_response('/commits')
     authors = {}
     @response.each do |subhash|
-      name = subhash["commit"]["author"]["name"]
+      name = subhash['commit']['author']['name']
       authors[name] = 0 unless authors.has_key? name
       authors[name] += 1
     end
     authors
+  end
+
+  # Public: Finds the number of lines written in each programming language
+  #
+  # Returns a hash of the langauges and the number of lines
+  def languages
+    github_response('/languages')
+    @response
   end
 end
