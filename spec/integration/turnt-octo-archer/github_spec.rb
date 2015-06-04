@@ -54,4 +54,10 @@ RSpec.describe Github do
       expect(@github.current_issues[0]["user"]).to eq "ab8971"
     end
   end
+
+  describe '.commits_per_author' do
+    it 'returns number of commits for authors ' do
+      expect(@github.commits_per_author["David Crowder"]).to be > 1
+    end
+  end
 end
