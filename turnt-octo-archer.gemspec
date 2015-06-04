@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Turnt::Octo::Archer::VERSION
   spec.authors       = ["Matt McKillip"]
   spec.email         = ["matt.mckillip@cerner.com"]
-  spec.summary       = "This is a summary"
-  spec.description   = "This is a description"
+  spec.summary       = "This gem is a wrapper around the GitHub API. I am using this as a learning tool for Ruby."
+  spec.description   = "Use this to get information from a specified repo."
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,6 +18,11 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "httparty"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "nyan-cat-formatter"
+
 end
