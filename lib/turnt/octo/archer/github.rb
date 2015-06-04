@@ -112,7 +112,6 @@ class Github
   # Returns an array of hashes containing information about the open issues
   def current_issues
     github_response("/issues")
-    @response
     issue_hash = {}
     issues = []
     @response.each do |subhash|
@@ -126,5 +125,19 @@ class Github
       issues << issue_hash
     end
     issues
+  end
+
+  # Public: Finds the amount of commits for each author
+  #
+  # Returns a hash of authors and the number of commits mad
+  def commits_per_author
+    github_response("/commits")
+    authors = {}
+    @response.each do |subhash|
+      name = subhash["commit"]["author"]["name"]
+      authors[name] = 0 unless authors.has_key? name
+      authors[name] += 1
+    end
+    authors
   end
 end
