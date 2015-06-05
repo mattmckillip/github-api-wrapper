@@ -108,7 +108,7 @@ module TurntOctoArcher
       hash.each do |key,value|
         result << "#{INDENT * (level + 0)} #{key.split.map(&:capitalize)*' '}: #{value}" unless value.is_a?(Hash)
         result << "#{INDENT * (level + 0)} #{key.split.map(&:capitalize)*' '}" if value.is_a?(Hash)
-        result << hash_to_haml(value, level + 2) if value.is_a?(Hash)
+        result << command_line_output(value, level + 2) if value.is_a?(Hash)
       end
       result.join("")
       result << "\n"
@@ -124,7 +124,7 @@ module TurntOctoArcher
                   | __| | | | '__| '_ \\| __|____ / _ \\ / __| __/ _ \\ _____ / _` | '__/ __| '_ \\ / _ \\ '__|
                   | |_| |_| | |  | | | | ||_____| (_) | (__| || (_) |_____| (_| | | | (__| | | |  __/ |
                    \\__|\\__,_|_|  |_| |_|\\__|     \\___/ \\___|\\__\\___/       \\__,_|_|  \\___|_| |_|\\___|_|"
-      my_string << "\n\n\t\t\t\t  You are viewing information about #{my_github.url}"
+      my_string << "\n\n\t\t  You are viewing information about #{my_github.url}"
       puts my_string
     end
 
