@@ -195,14 +195,14 @@ module TurntOctoArcher
 
     # Public: Finds the relevant information for current issues
     #
-    # Returns an [Array] of hashes containing information about the open issues or nil if nothing was found.
+    # Returns a [Hash] containing information about the open issues or nil if nothing was found.
     def current_issues
       issues = nil
       github_response('/issues')
       if response?
         issue_hash = {}
-        issues = []
-        @response.each do |subhash|
+        issues = {}
+        @response.each_with_index do |subhash, i|
           issue_hash['id'] = subhash['id']
           issue_hash['title'] = subhash['title']
           issue_hash['user'] = subhash['user']['login']
@@ -210,7 +210,7 @@ module TurntOctoArcher
           issue_hash['url'] = subhash['url']
 
           # Add isses to the array
-          issues << issue_hash
+          issues[i.to_s] = issue_hash
         end
       end
       issues
