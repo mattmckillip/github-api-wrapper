@@ -40,6 +40,7 @@ module TurntOctoArcher
     def github_response(additional_info)
       @response = HTTParty.get("#{@api_url}#{@org_name}/#{@project_name}#{additional_info}",
                                headers:{'User-Agent' => 'test'})
+      puts @response
     end
 
     # Public: Gets the id for this project.
@@ -250,6 +251,8 @@ module TurntOctoArcher
       if @response.nil?
         bool = false
       elsif @response.is_a?(Hash) && @response['message'] == 'Not Found'
+        bool = false
+      elsif @response.is_a?(Hash) && @response['message'].start_with?('API rate limit exceeded')
         bool = false
       end
       bool
