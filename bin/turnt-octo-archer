@@ -1,29 +1,72 @@
 #!/usr/bin/env ruby
 
+#TODO: Look into a cleaner way to do this
+#$:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 require 'optparse'
+require '../lib/turnt/octo/archer'
+require '../lib/turnt/octo/archer/cli'
+require '../lib/turnt/octo/archer/git_hub'
+
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
+  opts.banner = 'Usage: example.rb [options]'
 
-  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |v|
     options[:verbose] = v
+  end
+
+  options[:api_url] = nil
+  opts.on('-g', '--github_api_url URL', 'github instance, default is https://api.github.cerner.com/') do |g|
+    options[:api_url] = g
+  end
+
+  options[:org_name] = nil
+  opts.on('-o', '--org ORG', 'github organization, default is OpsInfra') do |o|
+    options[:org_name] = o
+  end
+
+  options[:project_name] = nil
+  opts.on('-p', '--project PROJECT', 'github project, default is ops_spork') do |p|
+    options[:project_name] = p
+  end
+
+  options[:all] = nil
+  opts.on('-a', '--all', 'get all of the information the git_hub.rb class provides') do |p|
+    options[:all] = true
+  end
+
+  options[:commits] = nil
+  opts.on('-c', '--commits', 'show the commit information for the repo') do |p|
+    options[:commits] = true
+  end
+
+  options[:issues] = nil
+  opts.on('-i', '--issues', 'show the issue information for the repo') do |p|
+    options[:issues] = true
+  end
+
+  options[:general] = nil
+  opts.on('-g', '--general', 'show the gener information for the repo') do |p|
+    options[:general] = true
   end
 
   # No argument, shows at tail.  This will print an options summary.
   # Try it and see!
-  opts.on_tail("-h", "--help", "Show this message") do
+  opts.on_tail('-h', '--help', 'Show this message') do
       puts opts
       exit
   end
 
   # Another typical switch to print the version.
-  opts.on_tail("--version", "Show version") do
+  opts.on_tail('--version', 'Show version') do
     puts ::Version.join('.')
     exit
   end
 
 end.parse!
 
-p options
-p ARGV
+cli = TurntOctoArcher::CLI.new(options)
+cli.run
+
+
