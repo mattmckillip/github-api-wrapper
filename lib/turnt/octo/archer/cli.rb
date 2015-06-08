@@ -45,9 +45,10 @@ module TurntOctoArcher
       # Build our hash.
       my_hash = build_hash(my_github)
 
+      puts command_line_output(my_hash)
+
       # Write html to a file.
       if @html
-        puts command_line_output(my_hash)
         File.open("#{@html}.html", 'w') { |file| file.write(HashToHTML(my_hash)) }
       end
     end
@@ -99,7 +100,7 @@ module TurntOctoArcher
     INDENT = '  ' # use 2 spaces for indentation
     # Private: Formats a hash using indents to display reader friendly information on the command line.
     #
-    # hash - a [Hash] that will be formatted for the command line.
+    # hash  - a [Hash] that will be formatted for the command line.
     # level - an [Integer] used to determine the indent level
     #
     # Returns a [String] of a hash to be printed to the command line
