@@ -1,12 +1,9 @@
 #!/usr/bin/env ruby
 
-#TODO: Look into a cleaner way to do this
-#$:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 require 'optparse'
 require '../lib/turnt/octo/archer'
 require '../lib/turnt/octo/archer/cli'
 require '../lib/turnt/octo/archer/git_hub'
-
 
 options = {}
 OptionParser.new do |opts|
@@ -62,10 +59,7 @@ OptionParser.new do |opts|
       puts opts
       exit
   end
-
 end.parse!
 
 cli = TurntOctoArcher::CLI.new(options)
 cli.run
-
-

@@ -64,12 +64,17 @@ module TurntOctoArcher
         git_hub_hash['general info']                      = {}
         git_hub_hash['general info']['owner']             = my_github.owner
         git_hub_hash['general info']['id']                = my_github.id
-        git_hub_hash['general info']['created']           = my_github.created_at
+        git_hub_hash['general info']['description']       = my_github.description
+        git_hub_hash['general info']['created at']        = my_github.created_at
+        git_hub_hash['general info']['updated at']        = my_github.updated_at
+        git_hub_hash['general info']['pushed at']         = my_github.pushed_at
+        git_hub_hash['general info']['size']              = my_github.size
+        git_hub_hash['general info']['default language']  = my_github.default_language
         git_hub_hash['general info']['languages']         = my_github.languages
         git_hub_hash['general info']['num branches']      = my_github.number_of_branches
         git_hub_hash['general info']['default branches']  = my_github.default_branch
         git_hub_hash['general info']['private']           = my_github.private?
-        git_hub_hash['general info']['num subscribers']   = my_github.subscribers
+        git_hub_hash['general info']['subscriber count']   = my_github.subscribers
       end
 
       if @all || @issues

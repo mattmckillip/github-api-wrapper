@@ -24,10 +24,16 @@ module TurntOctoArcher
         @owner = @response['owner']['login']
         @private = @response['private']
         @url = @response['url']
+        @description = @response['description']
         @created_at = @response['created_at']
+        @updated_at = @response['updated_at']
+        @pushed_at = @response['pushed_at']
+        @size = @response['size']
+        @default_language = @response['language']
         @has_issues = @response['has_issues']
         @default_branch = @response['default_branch']
         @subscribers = @response['subscribers_count']
+        @forks = @response['forks']
       end
     end
 
@@ -53,6 +59,13 @@ module TurntOctoArcher
     # Returns the [String] name of the project or nil if nothing was found.
     def name
       @name
+    end
+
+    # Public: Gets the description of this project.
+    #
+    # Returns the [String] description of the project  or nil if nothing was found.
+    def description
+      @description
     end
 
     # Public: Gets the owner of this project.
@@ -83,6 +96,34 @@ module TurntOctoArcher
       @created_at
     end
 
+    # Public: Gets the updated date for this project.
+    #
+    # Returns the [String] updated date for the project or nil if nothing was found.
+    def updated_at
+      @updated_at
+    end
+
+    # Public: Gets the pushed date for this project.
+    #
+    # Returns the [String] pushed date for the project or nil if nothing was found.
+    def pushed_at
+      @pushed_at
+    end
+
+    # Public: Gets the size of this project.
+    #
+    # Returns the [String] size for the project or nil if nothing was found.
+    def size
+      @size
+    end
+
+    # Public: Gets the default language of this project.
+    #
+    # Returns the [String] default language for the project or nil if nothing was found.
+    def default_language
+      @default_language
+    end
+
     # Public: Checks for open issues in the project.
     #
     # Returns [Boolean] true if there are any open issues or nil if nothing was found.
@@ -102,6 +143,13 @@ module TurntOctoArcher
     # Returns the [Integer] number of subscribers for the project or nil if nothing was found.
     def subscribers
       @subscribers
+    end
+
+    # Public: Gets the number of forks for this project.
+    #
+    # Returns the [Integer] number of forks for the project or nil if nothing was found.
+    def forks
+      @forks
     end
 
     # Public: Gets the total number of commits in the past year.

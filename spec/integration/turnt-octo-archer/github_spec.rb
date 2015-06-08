@@ -42,6 +42,18 @@ RSpec.describe TurntOctoArcher::GitHub do
     end
   end
 
+  describe '.updated_at' do
+    it 'returns date updated_at' do
+      expect(@github.updated_at).to eq '2015-06-05T13:43:34Z'
+    end
+  end
+
+  describe '.pushed_at' do
+    it 'returns date pushed at' do
+      expect(@github.pushed_at).to eq '2015-06-05T13:43:32Z'
+    end
+  end
+
   describe '.issues?' do
     it 'returns issues' do
       expect(@github.issues?).to eq true
@@ -57,6 +69,12 @@ RSpec.describe TurntOctoArcher::GitHub do
   describe '.subscribers' do
     it 'returns subscribers' do
       expect(@github.subscribers).to eq 19
+    end
+  end
+
+  describe '.forks' do
+    it 'returns number of forks' do
+      expect(@github.forks).to eq 2
     end
   end
 
@@ -112,6 +130,12 @@ RSpec.describe TurntOctoArcher::GitHub do
   describe '.languages' do
     it 'returns number lines per language ' do
       expect(@github.languages['Ruby']).to be > 50_000
+    end
+  end
+
+  describe '.default_language' do
+    it 'returns the defaul langauge' do
+      expect(@github.default_language).to eq 'CSS'
     end
   end
 end
